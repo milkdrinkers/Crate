@@ -1,234 +1,216 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>simplixstorage</artifactId>
-  <version>3.2.7</version>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <groupId>com.github.milkdrinkers</groupId>
+    <artifactId>simplixstorage</artifactId>
+    <version>3.2.7</version>
 
-  <build>
-    <defaultGoal>clean verify -U</defaultGoal>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.8.2</version>
-        </plugin>
+    <build>
+        <defaultGoal>clean verify -U</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.12.1</version>
+                </plugin>
 
-        <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.1.1</version>
-        </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
 
-        <plugin>
-          <artifactId>maven-scm-publish-plugin</artifactId>
-          <version>1.1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <artifactId>maven-shade-plugin</artifactId>
-        <configuration>
-          <createDependencyReducedPom>false</createDependencyReducedPom>
-          <minimizeJar>true</minimizeJar>
-          <relocations>
-            <relocation>
-              <pattern>org.json</pattern>
-              <shadedPattern>de.leonhard.storage.shaded.json</shadedPattern>
-            </relocation>
-            <relocation>
-              <pattern>com.esotericsoftware</pattern>
-              <shadedPattern>de.leonhard.storage.shaded.esotericsoftware</shadedPattern>
-            </relocation>
-            <relocation>
-              <pattern>org.jetbrains</pattern>
-              <shadedPattern>de.leonhard.storage.shaded.jetbrains</shadedPattern>
-            </relocation>
-          </relocations>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.2.1</version>
-      </plugin>
+                <plugin>
+                    <artifactId>maven-scm-publish-plugin</artifactId>
+                    <version>1.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <minimizeJar>true</minimizeJar>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.json</pattern>
+                            <shadedPattern>de.leonhard.storage.shaded.json</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.esotericsoftware</pattern>
+                            <shadedPattern>de.leonhard.storage.shaded.esotericsoftware</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains</pattern>
+                            <shadedPattern>de.leonhard.storage.shaded.jetbrains</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>3.4.1</version>
+            </plugin>
 
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <addMavenDescriptor>false</addMavenDescriptor>
-            <manifest>
-              <mainClass>de.leonhard.storage.Main</mainClass>
-            </manifest>
-            <manifestEntries>
-              <Built-By>${project.name} Development Team</Built-By>
-              <Manifest-Version>${project.version}</Manifest-Version>
-            </manifestEntries>
-          </archive>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.1.2</version>
-      </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                        <manifest>
+                            <mainClass>de.leonhard.storage.Main</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Built-By>${project.name} Development Team</Built-By>
+                            <Manifest-Version>${project.version}</Manifest-Version>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>3.3.0</version>
+            </plugin>
 
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <optimize>true</optimize>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <id>compile</id>
-            <phase>compile</phase>
-          </execution>
-          <execution>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
-            <id>testCompile</id>
-            <phase>test-compile</phase>
-          </execution>
-        </executions>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.8.1</version>
-      </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <optimize>true</optimize>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <id>testCompile</id>
+                        <phase>test-compile</phase>
+                    </execution>
+                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>3.11.0</version>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <!-- YAML -->
+        <dependency>
+            <artifactId>yamlbeans</artifactId>
+            <groupId>com.esotericsoftware.yamlbeans</groupId>
+            <scope>compile</scope>
+            <version>1.15</version>
+        </dependency>
 
-      <plugin>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.0.0-M1</version>
-      </plugin>
+        <!-- JSON -->
+        <dependency>
+            <artifactId>json</artifactId>
+            <groupId>org.json</groupId>
+            <scope>compile</scope>
+            <version>20230227</version>
+        </dependency>
 
-      <plugin>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <configuration>
-          <nexusUrl>http://thewarking.de:8081/</nexusUrl>
-          <serverId>thewarking</serverId>
-          <skipStaging>true</skipStaging>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>deploy</goal>
-            </goals>
-            <id>default-deploy</id>
-            <phase>deploy</phase>
-          </execution>
-        </executions>
-        <groupId>org.sonatype.plugins</groupId>
-        <version>1.6.8</version>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencies>
-    <!-- YAML -->
-    <dependency>
-      <artifactId>yamlbeans</artifactId>
-      <groupId>com.esotericsoftware.yamlbeans</groupId>
-      <scope>compile</scope>
-      <version>1.15</version>
-    </dependency>
+        <!-- Lombok -->
+        <dependency>
+            <artifactId>lombok</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <scope>provided</scope>
+            <version>1.18.26</version>
+        </dependency>
 
-    <!-- JSON -->
-    <dependency>
-      <artifactId>json</artifactId>
-      <groupId>org.json</groupId>
-      <scope>compile</scope>
-      <version>20230227</version>
-    </dependency>
+        <!-- JetBrains Annotations -->
+        <dependency>
+            <artifactId>annotations</artifactId>
+            <groupId>org.jetbrains</groupId>
+            <version>24.0.1</version>
+        </dependency>
 
-    <!-- Lombok -->
-    <dependency>
-      <artifactId>lombok</artifactId>
-      <groupId>org.projectlombok</groupId>
-      <scope>provided</scope>
-      <version>1.18.26</version>
-    </dependency>
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-    <!-- JetBrains Annotations -->
-    <dependency>
-      <artifactId>annotations</artifactId>
-      <groupId>org.jetbrains</groupId>
-      <version>24.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>5.9.2</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <description>Store data in a better way</description>
-  <developers>
-    <developer>
-      <email>JavaFactoryDev@gmail.com</email>
-      <id>JavaFactoryDev</id>
-      <name>Leonhard Solbach</name>
-      <roles>
-        <role>Lead Developer</role>
-      </roles>
-      <timezone>Germany</timezone>
-      <url>https://github.com/JavaFactoryDev</url>
-    </developer>
+    <name>SimplixStorage</name>
+    <description>Store data in a better way</description>
+    <url>https://github.com/milkdrinkers/SimplixStorage</url>
+    <developers>
+        <developer>
+            <email>JavaFactoryDev@gmail.com</email>
+            <id>JavaFactoryDev</id>
+            <name>Leonhard Solbach</name>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+            <timezone>Germany</timezone>
+            <url>https://github.com/JavaFactoryDev</url>
+        </developer>
 
-    <developer>
-      <email>thezeanon@gmail.com</email>
-      <id>Zeanon</id>
-      <name>Zeanon</name>
-      <roles>
-        <role>Refactoring</role>
-      </roles>
-      <timezone>Germany</timezone>
-      <url>https://github.com/Zeanon</url>
-    </developer>
-  </developers>
-  <groupId>com.github.simplix-softworks</groupId>
-  <licenses>
-    <license>
-      <name>Apache License 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-    </license>
-  </licenses>
+        <developer>
+            <email>thezeanon@gmail.com</email>
+            <id>Zeanon</id>
+            <name>Zeanon</name>
+            <roles>
+                <role>Refactoring</role>
+            </roles>
+            <timezone>Germany</timezone>
+            <url>https://github.com/Zeanon</url>
+        </developer>
 
-  <modelVersion>4.0.0</modelVersion>
+        <developer>
+            <email>darksaid9889@gmail.com</email>
+            <id>darksaid98</id>
+            <name>darksaid98</name>
+            <roles>
+                <role>Fork Maintainer</role>
+            </roles>
+            <timezone>CET</timezone>
+            <url>https://github.com/darksaid98</url>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
 
-  <name>LightningStorage</name>
+    <scm>
+        <connection>scm:git:git://github.com/milkdrinkers/SimplixStorage.git</connection>
+        <developerConnection>scm:git:ssh://github.com/milkdrinkers/SimplixStorage.git</developerConnection>
+        <url>//github.com/milkdrinkers/SimplixStorage</url>
+    </scm>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <modelVersion>4.0.0</modelVersion>
 
-  <repositories>
-    <repository>
-      <id>yamlbeans</id>
-      <url>https://mvnrepository.com/artifact/com.esotericsoftware.yamlbeans/yamlbeans</url>
-    </repository>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-    <repository>
-      <id>json</id>
-      <url>https://mvnrepository.com/artifact/org.json/json</url>
-    </repository>
-  </repositories>
+    <repositories>
+        <repository>
+            <id>yamlbeans</id>
+            <url>https://mvnrepository.com/artifact/com.esotericsoftware.yamlbeans/yamlbeans</url>
+        </repository>
 
-  <scm>
-    <connection>scm:git:git://github.com/JavaFactoryDev/LightningStorage.git</connection>
-    <developerConnection>scm:git:ssh://github.com/JavaFactoryDev/LightningStorage.git
-    </developerConnection>
-    <url>//github.com/JavaFactoryDev/LightningStorage</url>
-  </scm>
-
-  <url>https://github.com/JavaFactoryDev/LightningStorage</url>
+        <repository>
+            <id>json</id>
+            <url>https://mvnrepository.com/artifact/org.json/json</url>
+        </repository>
+    </repositories>
 </project>
