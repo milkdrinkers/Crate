@@ -255,7 +255,7 @@ public interface DataStorage {
     if (raw == null) {
       return null;
     }
-    return SimplixSerializer.deserialize(raw, clazz);
+    return SimplixSerializer.deserialize(raw, clazz, key);
   }
 
   @Nullable
@@ -268,7 +268,7 @@ public interface DataStorage {
 
     return rawList
         .stream()
-        .map(input -> SimplixSerializer.deserialize(input, type))
+        .map(input -> SimplixSerializer.deserialize(input, type, key))
         .collect(Collectors.toList());
   }
 

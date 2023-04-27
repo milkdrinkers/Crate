@@ -1,9 +1,9 @@
 package de.leonhard.storage.internal.serialize;
 
 import de.leonhard.storage.util.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Nullable;
@@ -56,12 +56,12 @@ public class SimplixSerializer {
     return serializable.serialize(obj);
   }
 
-  public <T> T deserialize(final Object raw, Class<T> type) {
+  public <T> T deserialize(final Object raw, Class<T> type, final String key) {
     final SimplixSerializable<?> serializable = findSerializable(type);
     Valid.notNull(
         serializable,
         "No serializable found for '" + type.getSimpleName() + "'",
         "Raw: '" + raw.getClass().getSimpleName() + "'");
-    return (T) serializable.deserialize(raw);
+    return (T) serializable.deserialize(raw, key.substring(key.lastIndexOf(".") + 1));
   }
 }

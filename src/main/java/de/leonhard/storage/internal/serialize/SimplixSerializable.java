@@ -8,9 +8,10 @@ public interface SimplixSerializable<T> {
    * Get our serializable from data in data-structure.
    *
    * @param obj Data to deserialize our class from.
+   * @param key The key of the object.
    * @throws ClassCastException Exception thrown when deserialization failed.
    */
-  T deserialize(@NonNull final Object obj) throws ClassCastException;
+  T deserialize(@NonNull final Object obj, final String key) throws ClassCastException;
 
   /**
    * Save our serializable to data-structure.
