@@ -3,9 +3,9 @@ package com.github.milkdrinkers.Crate;
 import com.github.milkdrinkers.Crate.internal.FlatFile;
 import com.github.milkdrinkers.Crate.internal.provider.InputStreamProvider;
 import com.github.milkdrinkers.Crate.internal.provider.CrateProviders;
-import com.github.milkdrinkers.Crate.internal.settings.ConfigSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ConfigSetting;
 import com.github.milkdrinkers.Crate.internal.settings.DataType;
-import com.github.milkdrinkers.Crate.internal.settings.ReloadSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ReloadSetting;
 import com.github.milkdrinkers.Crate.util.FileUtils;
 import com.github.milkdrinkers.Crate.util.Valid;
 import lombok.NonNull;
@@ -23,8 +23,8 @@ public final class CrateBuilder {
     private final String path;
     private String name;
     private InputStream inputStream;
-    private ReloadSettings reloadSettings;
-    private ConfigSettings configSettings;
+    private ReloadSetting reloadSetting;
+    private ConfigSetting configSetting;
     private DataType dataType;
 
     private @Nullable Consumer<FlatFile> reloadConsumer = null;
@@ -106,13 +106,13 @@ public final class CrateBuilder {
         return this;
     }
 
-    public CrateBuilder setConfigSettings(@NonNull final ConfigSettings configSettings) {
-        this.configSettings = configSettings;
+    public CrateBuilder setConfigSetting(@NonNull final ConfigSetting configSetting) {
+        this.configSetting = configSetting;
         return this;
     }
 
-    public CrateBuilder setReloadSettings(@NonNull final ReloadSettings reloadSettings) {
-        this.reloadSettings = reloadSettings;
+    public CrateBuilder setReloadSetting(@NonNull final ReloadSetting reloadSetting) {
+        this.reloadSetting = reloadSetting;
         return this;
     }
 
@@ -130,8 +130,8 @@ public final class CrateBuilder {
             this.name,
             this.path,
             this.inputStream,
-            this.reloadSettings,
-            this.configSettings,
+            this.reloadSetting,
+            this.configSetting,
             this.dataType,
             reloadConsumer);
     }
@@ -141,8 +141,8 @@ public final class CrateBuilder {
             this.name,
             this.path,
             this.inputStream,
-            this.reloadSettings,
-            this.configSettings,
+            this.reloadSetting,
+            this.configSetting,
             this.dataType,
             reloadConsumer);
     }
@@ -152,7 +152,7 @@ public final class CrateBuilder {
             this.name,
             this.path,
             this.inputStream,
-            this.reloadSettings,
+            this.reloadSetting,
             reloadConsumer);
     }
 
@@ -161,7 +161,7 @@ public final class CrateBuilder {
             this.name,
             this.path,
             this.inputStream,
-            this.reloadSettings,
+            this.reloadSetting,
             reloadConsumer);
     }
 }

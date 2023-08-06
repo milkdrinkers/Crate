@@ -27,9 +27,9 @@ public enum DataType {
 
     private static final MapProvider mapProvider = CrateProviders.mapProvider();
 
-    public static DataType forConfigSetting(final ConfigSettings configSettings) {
+    public static DataType forConfigSetting(final ConfigSetting configSetting) {
         // Only Configs needs the preservation of the order of the keys
-        if (ConfigSettings.PRESERVE_COMMENTS.equals(configSettings)) {
+        if (ConfigSetting.PRESERVE_COMMENTS.equals(configSetting)) {
             return SORTED;
         }
         // In all other cases using the normal HashMap is better to save memory.

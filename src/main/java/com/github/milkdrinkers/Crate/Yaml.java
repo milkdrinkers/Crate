@@ -7,9 +7,9 @@ import com.github.milkdrinkers.Crate.internal.editor.yaml.SimpleYamlReader;
 import com.github.milkdrinkers.Crate.internal.editor.yaml.SimpleYamlWriter;
 import com.github.milkdrinkers.Crate.internal.editor.yaml.YamlEditor;
 import com.github.milkdrinkers.Crate.internal.editor.yaml.YamlParser;
-import com.github.milkdrinkers.Crate.internal.settings.ConfigSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ConfigSetting;
 import com.github.milkdrinkers.Crate.internal.settings.DataType;
-import com.github.milkdrinkers.Crate.internal.settings.ReloadSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ReloadSetting;
 import com.github.milkdrinkers.Crate.util.FileUtils;
 import lombok.*;
 import org.jetbrains.annotations.Nullable;
@@ -29,14 +29,14 @@ public class Yaml extends FlatFile {
     protected final YamlEditor yamlEditor;
     protected final YamlParser parser;
     @Setter
-    private ConfigSettings configSettings = ConfigSettings.SKIP_COMMENTS;
+    private ConfigSetting configSetting = ConfigSetting.SKIP_COMMENTS;
 
     public Yaml(@NonNull final Yaml yaml) {
         super(yaml.getFile());
         this.fileData = yaml.getFileData();
         this.yamlEditor = yaml.getYamlEditor();
         this.parser = yaml.getParser();
-        this.configSettings = yaml.getConfigSettings();
+        this.configSetting = yaml.getConfigSetting();
         this.inputStream = yaml.getInputStream().orElse(null);
         this.pathPrefix = yaml.getPathPrefix();
         this.reloadConsumer = yaml.getReloadConsumer();
@@ -55,17 +55,17 @@ public class Yaml extends FlatFile {
     public Yaml(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream,
-                @Nullable final ReloadSettings reloadSettings,
-                @Nullable final ConfigSettings configSettings,
+                @Nullable final ReloadSetting reloadSetting,
+                @Nullable final ConfigSetting configSetting,
                 @Nullable final DataType dataType) {
-        this(name, path, inputStream, reloadSettings, configSettings, dataType, null);
+        this(name, path, inputStream, reloadSetting, configSetting, dataType, null);
     }
 
     public Yaml(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream,
-                @Nullable final ReloadSettings reloadSettings,
-                @Nullable final ConfigSettings configSettings,
+                @Nullable final ReloadSetting reloadSetting,
+                @Nullable final ConfigSetting configSetting,
                 @Nullable final DataType dataType,
                 @Nullable final Consumer<FlatFile> reloadConsumer) {
         super(name, path, FileType.YAML, reloadConsumer);
@@ -78,18 +78,18 @@ public class Yaml extends FlatFile {
         this.yamlEditor = new YamlEditor(this.file);
         this.parser = new YamlParser(this.yamlEditor);
 
-        if (reloadSettings != null) {
-            this.reloadSettings = reloadSettings;
+        if (reloadSetting != null) {
+            this.reloadSetting = reloadSetting;
         }
 
-        if (configSettings != null) {
-            this.configSettings = configSettings;
+        if (configSetting != null) {
+            this.configSetting = configSetting;
         }
 
         if (dataType != null) {
             this.dataType = dataType;
         } else {
-            this.dataType = DataType.forConfigSetting(configSettings);
+            this.dataType = DataType.forConfigSetting(configSetting);
         }
 
         forceReload();
@@ -147,7 +147,7 @@ public class Yaml extends FlatFile {
     @Override
     protected void write(final FileData data) throws IOException {
         // If Comments shouldn't be preserved
-        if (!ConfigSettings.PRESERVE_COMMENTS.equals(this.configSettings)) {
+        if (!ConfigSetting.PRESERVE_COMMENTS.equals(this.configSetting)) {
             write0(this.fileData);
             return;
         }

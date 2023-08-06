@@ -1,6 +1,6 @@
 package com.github.milkdrinkers.Crate.internal.settings;
 
-public enum ConfigSettings {
+public enum ConfigSetting {
     PRESERVE_COMMENTS,
     SKIP_COMMENTS
 }

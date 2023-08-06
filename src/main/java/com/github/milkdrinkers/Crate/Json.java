@@ -3,7 +3,7 @@ package com.github.milkdrinkers.Crate;
 import com.github.milkdrinkers.Crate.internal.FileData;
 import com.github.milkdrinkers.Crate.internal.FileType;
 import com.github.milkdrinkers.Crate.internal.FlatFile;
-import com.github.milkdrinkers.Crate.internal.settings.ReloadSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ReloadSetting;
 import com.github.milkdrinkers.Crate.util.FileUtils;
 import lombok.Cleanup;
 import lombok.Getter;
@@ -41,14 +41,14 @@ public class Json extends FlatFile {
     public Json(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream,
-                @Nullable final ReloadSettings reloadSettings) {
-        this(name, path, inputStream, reloadSettings, null);
+                @Nullable final ReloadSetting reloadSetting) {
+        this(name, path, inputStream, reloadSetting, null);
     }
 
     public Json(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream,
-                @Nullable final ReloadSettings reloadSettings,
+                @Nullable final ReloadSetting reloadSetting,
                 @Nullable final Consumer<FlatFile> reloadConsumer) {
         super(name, path, FileType.JSON, reloadConsumer);
 
@@ -56,8 +56,8 @@ public class Json extends FlatFile {
             FileUtils.writeToFile(this.file, inputStream);
         }
 
-        if (reloadSettings != null) {
-            this.reloadSettings = reloadSettings;
+        if (reloadSetting != null) {
+            this.reloadSetting = reloadSetting;
         }
         forceReload();
     }

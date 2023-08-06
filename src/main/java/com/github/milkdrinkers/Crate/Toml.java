@@ -4,7 +4,7 @@ import com.github.milkdrinkers.Crate.internal.FileData;
 import com.github.milkdrinkers.Crate.internal.FileType;
 import com.github.milkdrinkers.Crate.internal.FlatFile;
 import com.github.milkdrinkers.Crate.internal.editor.toml.TomlManager;
-import com.github.milkdrinkers.Crate.internal.settings.ReloadSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ReloadSetting;
 import com.github.milkdrinkers.Crate.util.FileUtils;
 import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +35,7 @@ public class Toml extends FlatFile {
         @NonNull final String name,
         @NonNull final String path,
         @Nullable final InputStream inputStream,
-        @Nullable final ReloadSettings reloadSettings,
+        @Nullable final ReloadSetting reloadSetting,
         @Nullable final Consumer<FlatFile> reloadConsumer
     ) {
         super(name, path, FileType.TOML, reloadConsumer);
@@ -44,8 +44,8 @@ public class Toml extends FlatFile {
             FileUtils.writeToFile(this.file, inputStream);
         }
 
-        if (reloadSettings != null) {
-            this.reloadSettings = reloadSettings;
+        if (reloadSetting != null) {
+            this.reloadSetting = reloadSetting;
         }
 
         forceReload();

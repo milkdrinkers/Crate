@@ -1,9 +1,9 @@
 package com.github.milkdrinkers.Crate;
 
 import com.github.milkdrinkers.Crate.internal.FlatFile;
-import com.github.milkdrinkers.Crate.internal.settings.ConfigSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ConfigSetting;
 import com.github.milkdrinkers.Crate.internal.settings.DataType;
-import com.github.milkdrinkers.Crate.internal.settings.ReloadSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ReloadSetting;
 import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,37 +19,37 @@ public class Config extends Yaml {
     }
 
     public Config(final String name, final String path) {
-        this(name, path, null, null, ConfigSettings.PRESERVE_COMMENTS, DataType.SORTED);
+        this(name, path, null, null, ConfigSetting.PRESERVE_COMMENTS, DataType.SORTED);
     }
 
     public Config(
         final String name,
         @Nullable final String path,
         @Nullable final InputStream inputStream) {
-        this(name, path, inputStream, null, ConfigSettings.PRESERVE_COMMENTS, DataType.SORTED);
+        this(name, path, inputStream, null, ConfigSetting.PRESERVE_COMMENTS, DataType.SORTED);
     }
 
     public Config(
         final String name,
         @Nullable final String path,
         @Nullable final InputStream inputStream,
-        @Nullable final ReloadSettings reloadSettings,
-        @Nullable final ConfigSettings configSettings,
+        @Nullable final ReloadSetting reloadSetting,
+        @Nullable final ConfigSetting configSetting,
         @Nullable final DataType dataType) {
-        super(name, path, inputStream, reloadSettings, configSettings, dataType);
-        setConfigSettings(ConfigSettings.PRESERVE_COMMENTS);
+        super(name, path, inputStream, reloadSetting, configSetting, dataType);
+        setConfigSetting(ConfigSetting.PRESERVE_COMMENTS);
     }
 
     public Config(
         final String name,
         @Nullable final String path,
         @Nullable final InputStream inputStream,
-        @Nullable final ReloadSettings reloadSettings,
-        @Nullable final ConfigSettings configSettings,
+        @Nullable final ReloadSetting reloadSetting,
+        @Nullable final ConfigSetting configSetting,
         @Nullable final DataType dataType,
         @Nullable final Consumer<FlatFile> reloadConsumer) {
-        super(name, path, inputStream, reloadSettings, configSettings, dataType, reloadConsumer);
-        setConfigSettings(ConfigSettings.PRESERVE_COMMENTS);
+        super(name, path, inputStream, reloadSetting, configSetting, dataType, reloadConsumer);
+        setConfigSetting(ConfigSetting.PRESERVE_COMMENTS);
     }
 
     public Config(final File file) {

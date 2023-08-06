@@ -3,7 +3,7 @@ package com.github.milkdrinkers.Crate.internal;
 import com.github.milkdrinkers.Crate.annotation.ConfigPath;
 import com.github.milkdrinkers.Crate.internal.provider.CrateProviders;
 import com.github.milkdrinkers.Crate.internal.settings.DataType;
-import com.github.milkdrinkers.Crate.internal.settings.ReloadSettings;
+import com.github.milkdrinkers.Crate.internal.settings.ReloadSetting;
 import com.github.milkdrinkers.Crate.sections.FlatFileSection;
 import com.github.milkdrinkers.Crate.util.FileUtils;
 import com.github.milkdrinkers.Crate.util.Valid;
@@ -26,7 +26,7 @@ public abstract class FlatFile implements DataStorage, Comparable<FlatFile> {
     protected final File file;
     protected final FileType fileType;
     @Setter
-    protected ReloadSettings reloadSettings = ReloadSettings.INTELLIGENT;
+    protected ReloadSetting reloadSetting = ReloadSetting.INTELLIGENT;
     protected DataType dataType = DataType.UNSORTED;
     protected FileData fileData;
     @Nullable
@@ -331,7 +331,7 @@ public abstract class FlatFile implements DataStorage, Comparable<FlatFile> {
     // Should the file be re-read before the next get() operation?
     // Can be used as utility method for implementations of FlatFile
     protected boolean shouldReload() {
-        switch (this.reloadSettings) {
+        switch (this.reloadSetting) {
             case AUTOMATICALLY:
                 return true;
             case INTELLIGENT:

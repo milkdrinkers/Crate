@@ -1,6 +1,6 @@
 package com.github.milkdrinkers.Crate.internal.settings;
 
-public enum ReloadSettings {
+public enum ReloadSetting {
     AUTOMATICALLY,
     INTELLIGENT,
     MANUALLY
