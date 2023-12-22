@@ -17,13 +17,19 @@ java {
 
 repositories {
     mavenCentral()
+    maven("https://jitpack.io") {
+        content {
+            includeGroup("com.github.Osiris-Team")
+        }
+    }
 }
 
 dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
     annotationProcessor("org.jetbrains:annotations:24.0.1")
 
-    implementation("com.esotericsoftware.yamlbeans:yamlbeans:1.15")
+//    implementation("com.esotericsoftware.yamlbeans:yamlbeans:1.15")
+    implementation("com.github.Osiris-Team:Dyml:9.7.1")
     implementation("org.json:json:20230618")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
@@ -51,7 +57,8 @@ tasks {
         archiveClassifier.set("")
 
         fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${project.group}.Crate.shaded.${targetPkg}")
-        reloc("com.esotericsoftware", "esotericsoftware")
+//        reloc("com.esotericsoftware", "esotericsoftware")
+        reloc("com.osiris.dyml", "dyml")
         reloc("org.json", "json")
     }
 
