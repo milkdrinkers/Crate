@@ -3,6 +3,9 @@ plugins {
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "8.1.1" // Shades and relocates dependencies, See https://imperceptiblethoughts.com/shadow/introduction/
     id("io.freefair.lombok") version "8.6"
+
+    eclipse
+    idea
 }
 
 group = "com.github.milkdrinkers"
