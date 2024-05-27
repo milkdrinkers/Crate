@@ -2,7 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "8.1.1" // Shades and relocates dependencies, See https://imperceptiblethoughts.com/shadow/introduction/
-    id("io.freefair.lombok") version "8.1.0"
+    id("io.freefair.lombok") version "8.6"
 }
 
 group = "com.github.milkdrinkers"
@@ -20,14 +20,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains:annotations:24.0.1")
-    annotationProcessor("org.jetbrains:annotations:24.0.1")
+    compileOnly("org.jetbrains:annotations:24.1.0")
+    annotationProcessor("org.jetbrains:annotations:24.1.0")
 
     implementation("com.esotericsoftware.yamlbeans:yamlbeans:1.15")
-    implementation("org.json:json:20230618")
+    implementation("org.json:json:20240303")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0-M2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0-M2")
 }
 
 tasks {
@@ -40,6 +40,16 @@ tasks {
         targetCompatibility = JavaVersion.VERSION_1_8.toString()
         sourceCompatibility = JavaVersion.VERSION_1_8.toString()
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
+    }
+
+    javadoc {
+        isFailOnError = false
+        val options = options as StandardJavadocDocletOptions
+        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        options.overview = "src/main/javadoc/overview.html"
+        options.isDocFilesSubDirs = true
+        options.tags("apiNote:a:API Note:", "implNote:a:Implementation Note:", "implSpec:a:Implementation Requirements:")
+        options.use()
     }
 
     processResources {
