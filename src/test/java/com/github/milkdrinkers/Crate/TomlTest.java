@@ -67,8 +67,7 @@ public class TomlTest {
     }
 
     @AfterAll
-    @Test
-    void tearDown() {
+    static void tearDown() {
         toml.clear();
         Assertions.assertTrue(toml.getFile().delete());
     }

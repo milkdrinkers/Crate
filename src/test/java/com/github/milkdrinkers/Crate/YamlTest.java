@@ -77,8 +77,7 @@ public class YamlTest {
     }
 
     @AfterAll
-    @Test
-    void tearDown() {
+    static void tearDown() {
         yaml.clear();
         Assertions.assertTrue(yaml.getFile().delete());
     }
