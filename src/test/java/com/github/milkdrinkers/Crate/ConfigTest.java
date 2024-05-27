@@ -19,7 +19,6 @@ class ConfigTest {
     static Config config;
 
     @AfterAll
-    @Test
     static void tearDown() {
         config.clear();
         Assertions.assertTrue(config.getFile().delete());
@@ -96,16 +95,11 @@ class ConfigTest {
         Assertions.assertEquals(2, test.getAnnotationTest2());
     }
 
+    @Getter
     static class AnnotationTests {
-
-        @Getter
         @ConfigPath("annotation-test")
         public String annotationTest;
         @ConfigPath("section.annotations")
         public Integer annotationTest2;
-
-        public int getAnnotationTest2() {
-            return annotationTest2;
-        }
     }
 }

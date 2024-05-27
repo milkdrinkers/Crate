@@ -201,15 +201,15 @@ public interface DataStorage {
     }
 
     default List<Integer> getIntegerList(final String key) {
-        return getOrDefault(key, new ArrayList<>());
+        return getOrDefault(key, new ArrayList<String>()).stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
     default List<Byte> getByteList(final String key) {
-        return getOrDefault(key, new ArrayList<>());
+        return getOrDefault(key, new ArrayList<String>()).stream().map(Byte::parseByte).collect(Collectors.toList());
     }
 
     default List<Long> getLongList(final String key) {
-        return getOrDefault(key, new ArrayList<>());
+        return getOrDefault(key, new ArrayList<String>()).stream().map(Long::parseLong).collect(Collectors.toList());
     }
 
     default Map<?, ?> getMap(final String key) {
