@@ -1,3 +1,5 @@
+import java.time.Instant
+
 plugins {
     `java-library`
     `maven-publish`
@@ -73,6 +75,18 @@ tasks {
     }
 }
 
+// Apply custom version arg
+val versionArg = if (hasProperty("customVersion"))
+    (properties["customVersion"] as String).uppercase() // Uppercase version string
+else
+    "${project.version}-SNAPSHOT-${Instant.now().epochSecond}" // Append snapshot to version
+
+// Strip prefixed "v" from version tag
+project.version = if (versionArg.first().equals('v', true))
+    versionArg.substring(1)
+else
+    versionArg.uppercase()
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
@@ -80,7 +94,49 @@ publishing {
             artifactId = "crate"
             version = "${project.version}"
 
+            pom {
+                name.set("Crate")
+                description.set(rootProject.description.orEmpty())
+                url.set("https://github.com/milkdrinkers/Crate")
+                licenses {
+                    license {
+                        name.set("Apache License 2.0")
+                        url.set("https://www.apache.org/licenses/")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("darksaid98")
+                        name.set("darksaid98")
+                        organization.set("Milkdrinkers")
+                        organizationUrl.set("https://github.com/milkdrinkers")
+                    }
+                    developer {
+                        id.set("KotlinFactory")
+                        name.set("Leonhard Solbach")
+                        organization.set("Simplix Softworks")
+                        organizationUrl.set("https://simplixsoft.com/")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/milkdrinkers/Crate.git")
+                    developerConnection.set("scm:git:ssh://github.com:milkdrinkers/Crate.git")
+                    url.set("https://github.com/milkdrinkers/Crate")
+                }
+            }
+
             from(components["java"])
+        }
+    }
+
+    repositories {
+        maven {
+            name = "milkdrinkers"
+            url = uri("https://maven.athyrium.eu/releases")
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
         }
     }
 }
