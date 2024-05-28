@@ -9,7 +9,7 @@ runs:
       shell: bash
 
     - name: Validate Gradle Wrapper Authenticity
-      uses: gradle/wrapper-validation-action@v3
+      uses: gradle/actions/wrapper-validation@v3
 
     - name: Setup Gradle and Caching
       uses: gradle/actions/setup-gradle@v3
