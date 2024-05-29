@@ -41,7 +41,7 @@ tasks {
     }
 
     compileJava {
-        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        options.encoding = Charsets.UTF_8.name() 
         targetCompatibility = JavaVersion.VERSION_1_8.toString()
         sourceCompatibility = JavaVersion.VERSION_1_8.toString()
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
@@ -50,7 +50,7 @@ tasks {
     javadoc {
         isFailOnError = false
         val options = options as StandardJavadocDocletOptions
-        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        options.encoding = Charsets.UTF_8.name() 
         options.overview = "src/main/javadoc/overview.html"
         options.isDocFilesSubDirs = true
         options.tags("apiNote:a:API Note:", "implNote:a:Implementation Note:", "implSpec:a:Implementation Requirements:")
@@ -58,7 +58,7 @@ tasks {
     }
 
     processResources {
-        filteringCharset = Charsets.UTF_8.name() // We want UTF-8 for everything
+        filteringCharset = Charsets.UTF_8.name() 
     }
 
     shadowJar {
@@ -72,27 +72,18 @@ tasks {
 
     test {
         useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
     }
 }
-
-// Apply custom version arg
-val versionArg = if (hasProperty("customVersion"))
-    (properties["customVersion"] as String).uppercase() // Uppercase version string
-else
-    "${project.version}-SNAPSHOT-${Instant.now().epochSecond}" // Append snapshot to version
-
-// Strip prefixed "v" from version tag
-project.version = if (versionArg.first().equals('v', true))
-    versionArg.substring(1)
-else
-    versionArg.uppercase()
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "${project.group}"
+            groupId = "${rootProject.group}"
             artifactId = "crate"
-            version = "${project.version}"
+            version = "${rootProject.version}"
 
             pom {
                 name.set("Crate")
@@ -148,3 +139,15 @@ publishing {
         }
     }
 }
+
+// Apply custom version arg
+val versionArg = if (hasProperty("customVersion"))
+    (properties["customVersion"] as String).uppercase() // Uppercase version string
+else
+    "${project.version}-SNAPSHOT-${Instant.now().epochSecond}" // Append snapshot to version
+
+// Strip prefixed "v" from version tag
+project.version = if (versionArg.first().equals('v', true))
+    versionArg.substring(1)
+else
+    versionArg.uppercase()
