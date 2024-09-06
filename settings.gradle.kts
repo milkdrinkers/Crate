@@ -10,3 +10,10 @@ plugins {
 }
 
 rootProject.name = "Crate"
+
+include(
+    "api",
+    "yaml",
+    "json",
+    "toml"
+)
