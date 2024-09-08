@@ -64,6 +64,8 @@ tasks {
 
         fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${project.group}.crate.shaded.${targetPkg}")
         reloc("org.yaml", "snakeyaml")
+
+        minimize()
     }
 
     test {
