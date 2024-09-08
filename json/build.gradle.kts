@@ -62,7 +62,7 @@ tasks {
         archiveBaseName.set(project.name)
         archiveClassifier.set("")
 
-        fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${project.group}.Crate.shaded.${targetPkg}")
+        fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${project.group}.crate.shaded.${targetPkg}")
         reloc("org.json", "json")
     }
 
