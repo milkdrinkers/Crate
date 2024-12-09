@@ -244,9 +244,10 @@ public class FileUtils {
     }
 
     public List<String> readAllLines(@NonNull final File file) {
-        val fileBytes = readAllBytes(file);
-        val asString = new String(fileBytes);
-        try (var reader = new BufferedReader(new StringReader(asString))) {
+        final byte[] fileBytes = readAllBytes(file);
+        final String asString = new String(fileBytes);
+
+        try (StringReader stringReader = new StringReader(asString); BufferedReader reader = new BufferedReader(stringReader)) {
             return reader.lines().collect(Collectors.toList());
         } catch (IOException ex) {
             throw CrateProviders.exceptionHandler().create(
