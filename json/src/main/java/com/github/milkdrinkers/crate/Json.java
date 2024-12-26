@@ -16,6 +16,7 @@ import org.json.JSONTokener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
@@ -113,7 +114,7 @@ public class Json extends FlatFile {
 
     @Override
     protected final void write(final FileData data) throws IOException {
-        @Cleanup val writer = FileUtils.createWriter(this.file);
+        @Cleanup Writer writer = FileUtils.createWriter(this.file);
         writer.write(JsonUtils.getJsonFromMap(data.toMap()).toString(3));
         writer.flush();
     }

@@ -1,14 +1,17 @@
 package com.github.milkdrinkers.crate.util;
 
 import com.github.milkdrinkers.crate.internal.provider.CrateProviders;
-import lombok.*;
+import lombok.Cleanup;
+import lombok.NonNull;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import lombok.val;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
@@ -181,8 +184,12 @@ public class FileUtils {
     }
 
     public Writer createWriter(@NonNull final File file) {
-        try {
-            return new OutputStreamWriter(new FileOutputStream(file, false), StandardCharsets.UTF_8);
+        try (
+            FileOutputStream fos = new FileOutputStream(file);
+            OutputStreamWriter osr = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+            BufferedWriter writer = new BufferedWriter(osr)
+        ) {
+            return writer;
         } catch (final IOException ex) {
             throw CrateProviders.exceptionHandler().create(
                 ex,
@@ -193,13 +200,14 @@ public class FileUtils {
 
     public void write(
         @NonNull final File file,
-        @NonNull final List<String> lines) {
+        @NonNull final List<String> lines
+    ) {
         try (
             FileOutputStream fos = new FileOutputStream(file, false);
             OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             BufferedWriter writer = new BufferedWriter(osw)
         ) {
-            for (String line : lines) {
+            for (final String line : lines) {
                 writer.write(line);
                 writer.newLine();
             }
@@ -213,12 +221,13 @@ public class FileUtils {
 
     public void writeToFile(
         @NonNull final File file,
-        @NonNull final InputStream inputStream) {
-        try (val outputStream = new FileOutputStream(file)) {
+        @NonNull final InputStream inputStream
+    ) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             if (!file.exists()) {
                 Files.copy(inputStream, file.toPath());
             } else {
-                val data = new byte[8192];
+                byte[] data = new byte[8192];
                 int count;
                 while ((count = inputStream.read(data, 0, 8192)) != -1) {
                     outputStream.write(data, 0, count);
@@ -263,10 +272,10 @@ public class FileUtils {
 
     @SneakyThrows
     public void zipFile(final String sourceDirectory, final String to) {
-        val fileTo = getAndMake(new File(to + ".zip"));
+        final File fileTo = getAndMake(new File(to + ".zip"));
 
-        @Cleanup val zipOutputStream = new ZipOutputStream(createOutputStream(fileTo));
-        val pathFrom = Paths.get(new File(sourceDirectory).toURI());
+        @Cleanup ZipOutputStream zipOutputStream = new ZipOutputStream(createOutputStream(fileTo));
+        final Path pathFrom = Paths.get(new File(sourceDirectory).toURI());
 
         Files.walk(pathFrom)
             .filter(path -> !Files.isDirectory(path))
@@ -301,9 +310,9 @@ public class FileUtils {
     }
 
     private byte[] md5Checksum(@NonNull final File file) {
-        try (val fileInputStream = new FileInputStream(file)) {
-            val buffer = new byte[1024];
-            val complete = MessageDigest.getInstance("MD5");
+        try (final FileInputStream fileInputStream = new FileInputStream(file)) {
+            byte[] buffer = new byte[1024];
+            MessageDigest complete = MessageDigest.getInstance("MD5");
             int numRead;
 
             do {
@@ -330,7 +339,8 @@ public class FileUtils {
     public void extractResource(
         @NonNull final String targetDirectory,
         @NonNull final String resourcePath,
-        final boolean replace) {
+        final boolean replace
+    ) {
         Valid.checkBoolean(
             !resourcePath.isEmpty(),
             "ResourcePath mustn't be empty");
@@ -372,7 +382,8 @@ public class FileUtils {
         @NonNull final File sourceJarFile,
         @NonNull final File targetDirectory,
         @NonNull final String sourceDirectory,
-        boolean replace) {
+        final boolean replace
+    ) {
 
         if (!targetDirectory.exists()) {
             Valid.checkBoolean(
@@ -410,31 +421,31 @@ public class FileUtils {
 
     private void copyFolder(
         @NonNull final File source,
-        @NonNull final File destination)
-        throws IOException {
+        @NonNull final File destination
+    ) throws IOException {
 
         if (source.isDirectory()) {
             if (!destination.exists()) {
                 destination.mkdirs();
             }
 
-            val files = source.list();
+            final String[] files = source.list();
 
             if (files == null) {
                 return;
             }
 
             for (val file : files) {
-                val srcFile = new File(source, file);
-                val destFile = new File(destination, file);
+                File srcFile = new File(source, file);
+                File destFile = new File(destination, file);
 
                 copyFolder(srcFile, destFile);
             }
         } else {
 
-            @Cleanup val in = createInputStream(source);
-            @Cleanup val out = createOutputStream(destination);
-            val buffer = new byte[1024];
+            @Cleanup InputStream in = createInputStream(source);
+            @Cleanup OutputStream out = createOutputStream(destination);
+            byte[] buffer = new byte[1024];
 
             int length;
             while ((length = in.read(buffer)) > 0) {
