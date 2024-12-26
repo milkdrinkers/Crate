@@ -1,0 +1,22 @@
+[versions]
+
+[libraries]
+annotations = "org.jetbrains:annotations:26.0.1"
+paper-api = "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
+spigot-api = "org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT"
+json = "org.json:json:20240303"
+yaml = "org.yaml:snakeyaml:2.3"
+
+# Testing
+junit-bom = "org.junit:junit-bom:5.11.4"
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
+
+[bundles]
+junit = ["junit-jupiter", "junit-platform"]
+
+[plugins]
+maven-deployer = "io.deepmedia.tools.deployer:0.16.0"
+lombok = "io.freefair.lombok:8.6"
+shadow = "com.gradleup.shadow:8.3.5"
+run-paper = "xyz.jpenilla.run-paper:2.3.1"

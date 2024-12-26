@@ -1,61 +1,11 @@
-import java.time.Instant
-
-plugins {
-    `java-library`
-    `maven-publish`
-    id("io.github.goooler.shadow") version "8.1.8"
-    id("io.freefair.lombok") version "8.6"
-
-    eclipse
-    idea
-}
-
-group = rootProject.group
-version = rootProject.version
-description = rootProject.description
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(8)) // Configure the java toolchain. This allows gradle to auto-provision JDK 17 on systems that only have JDK 8 installed for example.
-    withJavadocJar()
-    withSourcesJar()
-}
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    compileOnly("org.jetbrains:annotations:24.1.0")
-    annotationProcessor("org.jetbrains:annotations:24.1.0")
-
-    api(project(":api"))
-    implementation("org.json:json:20240303")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0-M2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0-M2")
+    api(projects.api)
+    implementation(libs.json)
 }
 
 tasks {
     build {
         dependsOn(shadowJar)
-    }
-
-    compileJava {
-        options.encoding = Charsets.UTF_8.name() 
-        options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
-    }
-
-    javadoc {
-        isFailOnError = false
-        val options = options as StandardJavadocDocletOptions
-        options.encoding = Charsets.UTF_8.name() 
-        options.isDocFilesSubDirs = true
-        options.tags("apiNote:a:API Note:", "implNote:a:Implementation Note:", "implSpec:a:Implementation Requirements:")
-        options.use()
-    }
-
-    processResources {
-        filteringCharset = Charsets.UTF_8.name() 
     }
 
     shadowJar {
@@ -67,79 +17,55 @@ tasks {
 
         minimize()
     }
-
-    test {
-        useJUnitPlatform()
-        testLogging {
-            events("passed", "skipped", "failed")
-        }
-    }
 }
 
-// Apply custom version arg
-val versionArg = if (hasProperty("customVersion"))
-    (properties["customVersion"] as String).uppercase() // Uppercase version string
-else
-    "${project.version}-SNAPSHOT-${Instant.now().epochSecond}" // Append snapshot to version
+deployer {
+    release {
+        version.set("${rootProject.version}")
+        description.set(rootProject.description.orEmpty())
+    }
 
-// Strip prefixed "v" from version tag
-project.version = if (versionArg.first().equals('v', true))
-    versionArg.substring(1)
-else
-    versionArg.uppercase()
+    projectInfo {
+        groupId = "io.github.milkdrinkers"
+        artifactId = "crate-json"
+        version = "${rootProject.version}"
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "${rootProject.group}"
-            artifactId = "crate-json"
-            version = "${rootProject.version}"
+        name = rootProject.name
+        description = rootProject.description.orEmpty()
+        url = "https://github.com/milkdrinkers/Crate"
 
-            pom {
-                name.set("Crate")
-                description.set(rootProject.description.orEmpty())
-                url.set("https://github.com/milkdrinkers/Crate")
-                licenses {
-                    license {
-                        name.set("Apache License 2.0")
-                        url.set("https://www.apache.org/licenses/")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("darksaid98")
-                        name.set("darksaid98")
-                        organization.set("Milkdrinkers")
-                        organizationUrl.set("https://github.com/milkdrinkers")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:git://github.com/milkdrinkers/Crate.git")
-                    developerConnection.set("scm:git:ssh://github.com:milkdrinkers/Crate.git")
-                    url.set("https://github.com/milkdrinkers/Crate")
-                }
-            }
+        scm {
+            connection = "scm:git:git://github.com/milkdrinkers/Crate.git"
+            developerConnection = "scm:git:ssh://github.com:milkdrinkers/Crate.git"
+            url = "https://github.com/milkdrinkers/Crate"
+        }
 
-            from(components["java"])
+        license({
+            name = "GNU General Public License Version 3"
+            url = "https://opensource.org/license/gpl-3-0/"
+        })
+
+        developer({
+            name.set("darksaid98")
+            email.set("darksaid9889@gmail.com")
+            url.set("https://github.com/darksaid98")
+            organization.set("Milkdrinkers")
+        })
+    }
+
+    content {
+        component {
+            fromJava()
         }
     }
 
-    repositories {
-        maven {
-            name = "releases"
-            url = uri("https://maven.athyrium.eu/releases")
-            credentials {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_PASSWORD")
-            }
-        }
-        maven {
-            name = "snapshots"
-            url = uri("https://maven.athyrium.eu/snapshots")
-            credentials {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_PASSWORD")
-            }
-        }
+    centralPortalSpec {
+        auth.user.set(secret("MAVEN_USERNAME"))
+        auth.password.set(secret("MAVEN_PASSWORD"))
+    }
+
+    signing {
+        key.set(secret("GPG_KEY"))
+        password.set(secret("GPG_PASSWORD"))
     }
 }
