@@ -4,8 +4,8 @@
 annotations = "org.jetbrains:annotations:26.0.1"
 paper-api = "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
 spigot-api = "org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT"
-yaml = "org.yaml:snakeyaml:2.3"
 json = "org.json:json:20250517"
+yaml = "org.yaml:snakeyaml:2.4"
 
 # Testing
 junit-bom = "org.junit:junit-bom:5.11.4"
