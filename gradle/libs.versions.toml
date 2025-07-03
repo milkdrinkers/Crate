@@ -3,7 +3,7 @@
 [libraries]
 annotations = "org.jetbrains:annotations:26.0.2"
 json = "org.json:json:20250517"
-yaml = "org.yaml:snakeyaml:2.4"
+yaml = "org.snakeyaml:snakeyaml-engine:2.9"
 
 # Testing
 junit-bom = "org.junit:junit-bom:5.13.2"

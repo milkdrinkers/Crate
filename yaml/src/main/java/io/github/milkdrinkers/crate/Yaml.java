@@ -5,6 +5,7 @@ import io.github.milkdrinkers.crate.internal.FileType;
 import io.github.milkdrinkers.crate.internal.FlatFile;
 import io.github.milkdrinkers.crate.internal.editor.yaml.YamlEditor;
 import io.github.milkdrinkers.crate.internal.editor.yaml.YamlParser;
+import io.github.milkdrinkers.crate.internal.editor.yaml.YamlWriter;
 import io.github.milkdrinkers.crate.internal.provider.CrateProviders;
 import io.github.milkdrinkers.crate.internal.settings.ConfigSetting;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
@@ -12,6 +13,8 @@ import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
 import io.github.milkdrinkers.crate.util.FileUtils;
 import lombok.*;
 import org.jetbrains.annotations.Nullable;
+import org.snakeyaml.engine.v2.api.Dump;
+import org.snakeyaml.engine.v2.api.Load;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +24,6 @@ import java.util.function.Consumer;
 
 @Getter
 public class Yaml extends FlatFile {
-
     protected final InputStream inputStream;
     protected final YamlEditor yamlEditor;
     protected final YamlParser parser;
@@ -115,9 +117,9 @@ public class Yaml extends FlatFile {
             InputStreamReader isr = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             BufferedReader reader = new BufferedReader(isr)
         ) {
-            org.yaml.snakeyaml.Yaml yaml = new org.yaml.snakeyaml.Yaml(CrateProviders.yamlLoaderOptions());
+            final Load yaml = new Load(CrateProviders.yamlLoaderOptions());
 
-            Map<String, Object> data = yaml.load(reader);
+            final Map<String, Object> data = (Map<String, Object>) yaml.loadFromReader(reader);
 
             FileData newData = new FileData(data, DataType.UNSORTED);
 
@@ -141,9 +143,9 @@ public class Yaml extends FlatFile {
 
     @Override
     protected Map<String, Object> readToMap() throws IOException {
-        org.yaml.snakeyaml.Yaml yaml = new org.yaml.snakeyaml.Yaml(CrateProviders.yamlLoaderOptions());
+        final Load yaml = new Load(CrateProviders.yamlLoaderOptions());
 
-        @Nullable final Map<String, Object> data = yaml.load(Files.newInputStream(getFile().toPath()));
+        final Map<String, Object> data = (Map<String, Object>) yaml.loadFromInputStream(Files.newInputStream(getFile().toPath()));
 
         return data == null ? new HashMap<>() : data;
     }
@@ -156,29 +158,27 @@ public class Yaml extends FlatFile {
             return;
         }
 
-        val unEdited = this.yamlEditor.read();
-        write0(this.fileData);
-        this.yamlEditor.write(this.parser.parseLines(unEdited, this.yamlEditor.readKeys()));
+        FileUtils.writer(file, writer -> {
+            final Dump yaml = new Dump(CrateProviders.yamlDumperOptions());
+
+            yaml.dump(fileData.toMap(), new YamlWriter(writer));
+        });
     }
 
     // Writing without comments
     private void write0(final FileData fileData) throws IOException {
-        try (
-            FileOutputStream fos = new FileOutputStream(file, false);
-            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-            BufferedWriter writer = new BufferedWriter(osw)
-        ) {
-            org.yaml.snakeyaml.Yaml yaml = new org.yaml.snakeyaml.Yaml(CrateProviders.yamlLoaderOptionsNoComments());
+        try {
+            FileUtils.writer(file, writer -> {
+                final Dump yaml = new Dump(CrateProviders.yamlDumperOptionsNoComments());
 
-            yaml.dump(fileData.toMap(), writer);
+                yaml.dump(fileData.toMap(), new YamlWriter(writer));
+            });
         } catch (final IOException ex) {
             throw CrateProviders.exceptionHandler().create(
                 ex,
                 "Error while writing to '" + file.getName() + "'.",
                 "In: '" + FileUtils.getParentDirPath(file) + "'");
         }
-//        @Cleanup val writer = new SimpleYamlWriter(this.file);
-//        writer.write(fileData.toMap());
     }
 
     // ----------------------------------------------------------------------------------------------------

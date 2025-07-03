@@ -114,8 +114,9 @@ public class Json extends FlatFile {
 
     @Override
     protected final void write(final FileData data) throws IOException {
-        @Cleanup Writer writer = FileUtils.createWriter(this.file);
-        writer.write(JsonUtils.getJsonFromMap(data.toMap()).toString(3));
-        writer.flush();
+        FileUtils.writer(this.file, writer -> {
+            writer.write(JsonUtils.getJsonFromMap(data.toMap()).toString(3));
+            writer.flush();
+        });
     }
 }

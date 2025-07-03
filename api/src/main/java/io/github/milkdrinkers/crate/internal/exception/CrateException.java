@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * Every exception which is thrown in Crate internally extends this exception.
  * <p>
- * It describes the basic format of exceptions we use. See implementations in {@link com.github.milkdrinkers.crate.internal.exceptions}
+ * It describes the basic format of exceptions we use. See implementations in {@link io.github.milkdrinkers.crate.internal.exceptions}
  */
 public class CrateException extends RuntimeException {
     private static final long serialVersionUID = 4815788455395994435L;

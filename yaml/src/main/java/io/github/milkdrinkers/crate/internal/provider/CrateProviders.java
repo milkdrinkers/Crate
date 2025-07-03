@@ -4,8 +4,9 @@ import io.github.milkdrinkers.crate.internal.settings.DataType;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.UtilityClass;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.LoaderOptions;
+import org.snakeyaml.engine.v2.api.DumpSettings;
+import org.snakeyaml.engine.v2.api.LoadSettings;
+import org.snakeyaml.engine.v2.common.ScalarStyle;
 
 /**
  * Interface for registering more powerful Map/List implementation than the default JDK one's
@@ -14,17 +15,16 @@ import org.yaml.snakeyaml.LoaderOptions;
 @UtilityClass
 @Accessors(fluent = true, chain = true)
 public class CrateProviders {
-
     @Setter
     private MapProvider mapProvider;
     @Setter
-    private LoaderOptions yamlLoaderOptions;
+    private LoadSettings yamlLoaderOptions;
     @Setter
-    private LoaderOptions yamlLoaderOptionsNoComments;
+    private LoadSettings yamlLoaderOptionsNoComments;
     @Setter
-    private DumperOptions yamlDumperOptions;
+    private DumpSettings yamlDumperOptions;
     @Setter
-    private DumperOptions yamlDumperOptionsNoComments;
+    private DumpSettings yamlDumperOptionsNoComments;
     @Setter
     private InputStreamProvider inputStreamProvider;
     @Setter
@@ -37,54 +37,54 @@ public class CrateProviders {
         }
         return mapProvider;
     }
-    public LoaderOptions yamlLoaderOptions() {
+    public LoadSettings yamlLoaderOptions() {
         if (yamlLoaderOptions == null) {
-            LoaderOptions options = new LoaderOptions();
-            options.setAllowRecursiveKeys(true);
-            options.setProcessComments(true);
-            yamlLoaderOptions = options;
+            yamlLoaderOptions = LoadSettings.builder()
+                .setAllowRecursiveKeys(true)
+                .setParseComments(true)
+                .build();
         }
         return yamlLoaderOptions;
     }
 
-    public LoaderOptions yamlLoaderOptionsNoComments() {
+    public LoadSettings yamlLoaderOptionsNoComments() {
         if (yamlLoaderOptions == null) {
-            LoaderOptions options = new LoaderOptions();
-            options.setAllowRecursiveKeys(true);
-            options.setProcessComments(false);
-            yamlLoaderOptions = options;
+            yamlLoaderOptions = LoadSettings.builder()
+                .setAllowRecursiveKeys(true)
+                .setParseComments(false)
+                .build();
         }
         return yamlLoaderOptions;
     }
 
-    public DumperOptions yamlDumperOptions() {
+    public DumpSettings yamlDumperOptions() {
         if (yamlDumperOptions == null) {
-            DumperOptions options = new DumperOptions();
-            options.setProcessComments(true);
-            options.setAllowUnicode(true);
-            options.setDefaultScalarStyle(DumperOptions.ScalarStyle.DOUBLE_QUOTED);
-            options.setIndentWithIndicator(false);
-            options.setIndent(2);
-            options.setIndicatorIndent(0);
-            options.setDereferenceAliases(true);
-            options.setSplitLines(false);
-            yamlDumperOptions = options;
+            yamlDumperOptions = DumpSettings.builder()
+                .setDumpComments(true)
+                .setUseUnicodeEncoding(true)
+                .setDefaultScalarStyle(ScalarStyle.DOUBLE_QUOTED)
+                .setIndentWithIndicator(false)
+                .setIndent(2)
+                .setIndicatorIndent(0)
+                .setDereferenceAliases(true)
+                .setSplitLines(false)
+                .build();
         }
         return yamlDumperOptions;
     }
 
-    public DumperOptions yamlDumperOptionsNoComments() {
+    public DumpSettings yamlDumperOptionsNoComments() {
         if (yamlDumperOptions == null) {
-            DumperOptions options = new DumperOptions();
-            options.setProcessComments(false);
-            options.setAllowUnicode(true);
-            options.setDefaultScalarStyle(DumperOptions.ScalarStyle.DOUBLE_QUOTED);
-            options.setIndentWithIndicator(false);
-            options.setIndent(2);
-            options.setIndicatorIndent(0);
-            options.setDereferenceAliases(true);
-            options.setSplitLines(false);
-            yamlDumperOptions = options;
+            yamlDumperOptions = DumpSettings.builder()
+                .setDumpComments(false)
+                .setUseUnicodeEncoding(true)
+                .setDefaultScalarStyle(ScalarStyle.DOUBLE_QUOTED)
+                .setIndentWithIndicator(false)
+                .setIndent(2)
+                .setIndicatorIndent(0)
+                .setDereferenceAliases(true)
+                .setSplitLines(false)
+                .build();
         }
         return yamlDumperOptions;
     }

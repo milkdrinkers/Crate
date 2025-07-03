@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 
 @SuppressWarnings({"unused"})
 public class Config extends Yaml {
-
     public Config(@NonNull final Config config) {
         super(config);
     }

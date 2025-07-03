@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
@@ -146,6 +147,10 @@ public class FileUtils {
     // Methods for reading & writing a file
     // ----------------------------------------------------------------------------------------------------
 
+    public interface IOFunction<T> {
+        void apply(T t) throws IOException;
+    }
+
     public InputStream createInputStream(@NonNull final File file) {
         try {
             return Files.newInputStream(file.toPath());
@@ -168,33 +173,71 @@ public class FileUtils {
         }
     }
 
-    public Reader createReader(@NonNull final File file) {
+    /**
+     * Creates a {@link Reader} for the specified file.
+     *
+     * @param file The file to read from.
+     * @return A BufferedReader for the specified file.
+     * @throws IOException If an I/O error occurs while creating the Reader.
+     * @since 4.0.0
+     */
+    public BufferedReader createReader(@NonNull final File file) throws IOException {
+        final FileInputStream fis = new FileInputStream(file);
+        final InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+        return new BufferedReader(isr);
+    }
+
+    /**
+     * Executes the given method with a {@link Reader} for the specified file.
+     *
+     * @param file   The file to read from.
+     * @param method The method to execute with the Reader.
+     * @throws IOException If an I/O error occurs while reading from the file.
+     * @since 4.0.0
+     */
+    public void reader(
+        @NonNull final File file,
+        @NotNull final IOFunction<BufferedReader> method
+    ) throws IOException {
         try (
-            FileInputStream fis = new FileInputStream(file);
-            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-            BufferedReader reader = new BufferedReader(isr)
+            final BufferedReader reader = createReader(file);
         ) {
-            return reader;
-        } catch (final IOException ex) {
-            throw CrateProviders.exceptionHandler().create(
-                ex,
-                "Error while creating Reader for '" + file.getName() + "'.",
-                "In: '" + getParentDirPath(file) + "'");
+            method.apply(reader);
         }
     }
 
-    public Writer createWriter(@NonNull final File file) {
+    /**
+     * Creates a {@link Writer} for the specified file.
+     * The file will be created if it does not exist, and overwritten if it does.
+     *
+     * @param file The file to write to.
+     * @return A BufferedWriter for the specified file.
+     * @throws IOException If an I/O error occurs while creating the Writer.
+     * @since 4.0.0
+     */
+    public BufferedWriter createWriter(@NonNull final File file) throws IOException {
+        final FileOutputStream fos = new FileOutputStream(file, false);
+        final OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+        return new BufferedWriter(osw);
+    }
+
+    /**
+     * Executes the given method with a {@link Writer} for the specified file.
+     * The file will be created if it does not exist, and overwritten if it does.
+     *
+     * @param file   The file to write to.
+     * @param method The method to execute with the Writer.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     * @since 4.0.0
+     */
+    public void writer(
+        @NonNull final File file,
+        @NotNull final IOFunction<BufferedWriter> method
+    ) throws IOException {
         try (
-            FileOutputStream fos = new FileOutputStream(file);
-            OutputStreamWriter osr = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-            BufferedWriter writer = new BufferedWriter(osr)
+            final BufferedWriter writer = createWriter(file);
         ) {
-            return writer;
-        } catch (final IOException ex) {
-            throw CrateProviders.exceptionHandler().create(
-                ex,
-                "Error while creating Writer for '" + file.getName() + "'.",
-                "In: '" + getParentDirPath(file) + "'");
+            method.apply(writer);
         }
     }
 
@@ -202,15 +245,13 @@ public class FileUtils {
         @NonNull final File file,
         @NonNull final List<String> lines
     ) {
-        try (
-            FileOutputStream fos = new FileOutputStream(file, false);
-            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-            BufferedWriter writer = new BufferedWriter(osw)
-        ) {
-            for (final String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
+        try {
+            writer(file, writer -> {
+                for (final String line : lines) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+            });
         } catch (final IOException ex) {
             throw CrateProviders.exceptionHandler().create(
                 ex,
@@ -219,6 +260,13 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Writes the content of the given InputStream to the specified file.
+     * If the file already exists, it will append the content to the file.
+     *
+     * @param file         The file to write to.
+     * @param inputStream  The InputStream containing the data to write.
+     */
     public void writeToFile(
         @NonNull final File file,
         @NonNull final InputStream inputStream
@@ -241,22 +289,10 @@ public class FileUtils {
         }
     }
 
-    private byte[] readAllBytes(@NonNull final File file) {
-        try {
-            return Files.readAllBytes(file.toPath());
-        } catch (final IOException ex) {
-            throw CrateProviders.exceptionHandler().create(
-                ex,
-                "Error while reading '" + file.getName() + "'.",
-                "In: '" + getParentDirPath(file) + "'");
-        }
-    }
-
     public List<String> readAllLines(@NonNull final File file) {
-        final byte[] fileBytes = readAllBytes(file);
-        final String asString = new String(fileBytes);
-
-        try (StringReader stringReader = new StringReader(asString); BufferedReader reader = new BufferedReader(stringReader)) {
+        try (
+            final BufferedReader reader = createReader(file)
+        ) {
             return reader.lines().collect(Collectors.toList());
         } catch (IOException ex) {
             throw CrateProviders.exceptionHandler().create(
