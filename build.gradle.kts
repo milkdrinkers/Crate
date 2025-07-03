@@ -65,6 +65,10 @@ subprojects {
             options.windowTitle = "${rootProject.name} Javadoc"
             options.tags("apiNote:a:API Note:", "implNote:a:Implementation Note:", "implSpec:a:Implementation Requirements:")
             options.addStringOption("Xdoclint:none", "-quiet")
+            options.links(
+                "https://javadoc.io/doc/org.json/json/${rootProject.libs.json.get().version}/",
+                "https://javadoc.io/doc/org.snakeyaml/snakeyaml-engine/${rootProject.libs.yaml.get().version}/"
+            )
             options.use()
         }
 
