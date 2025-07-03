@@ -235,7 +235,7 @@ public class FileUtils {
         @NotNull final IOFunction<BufferedWriter> method
     ) throws IOException {
         try (
-            final BufferedWriter writer = createWriter(file);
+            final BufferedWriter writer = createWriter(file)
         ) {
             method.apply(writer);
         }
@@ -264,8 +264,8 @@ public class FileUtils {
      * Writes the content of the given InputStream to the specified file.
      * If the file already exists, it will append the content to the file.
      *
-     * @param file         The file to write to.
-     * @param inputStream  The InputStream containing the data to write.
+     * @param file        The file to write to.
+     * @param inputStream The InputStream containing the data to write.
      */
     public void writeToFile(
         @NonNull final File file,

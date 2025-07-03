@@ -8,6 +8,7 @@ import java.io.Writer;
 /**
  * A writer for YAML data that implements the StreamDataWriter interface from SnakeYAML.
  * It provides methods to write strings to a YAML output stream and handle IOExceptions.
+ *
  * @since 4.0.0
  */
 public final class YamlWriter implements StreamDataWriter {

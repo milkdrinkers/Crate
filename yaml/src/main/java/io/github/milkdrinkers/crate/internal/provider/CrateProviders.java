@@ -37,6 +37,7 @@ public class CrateProviders {
         }
         return mapProvider;
     }
+
     public LoadSettings yamlLoaderOptions() {
         if (yamlLoaderOptions == null) {
             yamlLoaderOptions = LoadSettings.builder()

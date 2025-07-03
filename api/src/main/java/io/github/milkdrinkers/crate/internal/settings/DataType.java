@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.crate.internal.settings;
 
-import io.github.milkdrinkers.crate.internal.provider.MapProvider;
 import io.github.milkdrinkers.crate.internal.provider.CrateProviders;
+import io.github.milkdrinkers.crate.internal.provider.MapProvider;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;

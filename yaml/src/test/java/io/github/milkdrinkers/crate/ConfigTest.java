@@ -4,7 +4,10 @@ import io.github.milkdrinkers.crate.annotation.ConfigPath;
 import io.github.milkdrinkers.crate.internal.exceptions.CrateValidationException;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
 import lombok.Getter;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
