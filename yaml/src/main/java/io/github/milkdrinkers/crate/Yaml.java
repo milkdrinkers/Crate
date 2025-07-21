@@ -14,7 +14,6 @@ import io.github.milkdrinkers.crate.util.FileUtils;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.var;
 import org.jetbrains.annotations.Nullable;
 import org.snakeyaml.engine.v2.api.Dump;
 import org.snakeyaml.engine.v2.api.Load;
@@ -210,17 +209,17 @@ public class Yaml extends FlatFile {
 
     public final void framedHeader(final String... header) {
         List<String> stringList = new ArrayList<>();
-        var border = "# +----------------------------------------------------+ #";
+        String border = "# +----------------------------------------------------+ #";
         stringList.add(border);
 
-        for (var line : header) {
-            var builder = new StringBuilder();
+        for (String line : header) {
+            StringBuilder builder = new StringBuilder();
             if (line.length() > 50) {
                 continue;
             }
 
             int length = (50 - line.length()) / 2;
-            var finalLine = new StringBuilder(line);
+            StringBuilder finalLine = new StringBuilder(line);
 
             for (int i = 0; i < length; i++) {
                 finalLine.append(" ");
