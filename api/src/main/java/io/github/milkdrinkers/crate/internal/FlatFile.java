@@ -323,6 +323,9 @@ public abstract class FlatFile implements DataStorage, Comparable<FlatFile> {
     // ----------------------------------------------------------------------------------------------------
 
     protected final void reloadIfNeeded() {
+        if (reloadSetting.equals(ReloadSetting.MANUALLY))
+            return;
+
         if (shouldReload()) {
             forceReload();
         }
