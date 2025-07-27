@@ -1,5 +1,7 @@
-package io.github.milkdrinkers.crate.internal.provider;
+package io.github.milkdrinkers.crate.internal.provider.json;
 
+import io.github.milkdrinkers.crate.internal.provider.ExceptionHandler;
+import io.github.milkdrinkers.crate.internal.provider.InputStreamProvider;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
 import lombok.experimental.Accessors;
 import lombok.experimental.UtilityClass;
@@ -11,17 +13,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 @Accessors(fluent = true, chain = true)
 public class CrateProviders {
-    private MapProvider mapProvider;
     private InputStreamProvider inputStreamProvider;
     private ExceptionHandler exceptionHandler;
-
-    public MapProvider mapProvider() {
-        if (mapProvider == null) {
-            mapProvider = new MapProvider() {
-            };
-        }
-        return mapProvider;
-    }
 
     public InputStreamProvider inputStreamProvider() {
         if (inputStreamProvider == null) {

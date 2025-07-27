@@ -1,7 +1,8 @@
-package io.github.milkdrinkers.crate.internal.provider;
+package io.github.milkdrinkers.crate.internal.provider.yaml;
 
+import io.github.milkdrinkers.crate.internal.provider.ExceptionHandler;
+import io.github.milkdrinkers.crate.internal.provider.InputStreamProvider;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.UtilityClass;
 import org.snakeyaml.engine.v2.api.DumpSettings;
@@ -15,44 +16,17 @@ import org.snakeyaml.engine.v2.common.ScalarStyle;
 @UtilityClass
 @Accessors(fluent = true, chain = true)
 public class CrateProviders {
-    @Setter
-    private MapProvider mapProvider;
-    @Setter
     private LoadSettings yamlLoaderOptions;
-    @Setter
-    private LoadSettings yamlLoaderOptionsNoComments;
-    @Setter
     private DumpSettings yamlDumperOptions;
-    @Setter
     private DumpSettings yamlDumperOptionsNoComments;
-    @Setter
     private InputStreamProvider inputStreamProvider;
-    @Setter
     private ExceptionHandler exceptionHandler;
-
-    public MapProvider mapProvider() {
-        if (mapProvider == null) {
-            mapProvider = new MapProvider() {
-            };
-        }
-        return mapProvider;
-    }
 
     public LoadSettings yamlLoaderOptions() {
         if (yamlLoaderOptions == null) {
             yamlLoaderOptions = LoadSettings.builder()
                 .setAllowRecursiveKeys(true)
                 .setParseComments(true)
-                .build();
-        }
-        return yamlLoaderOptions;
-    }
-
-    public LoadSettings yamlLoaderOptionsNoComments() {
-        if (yamlLoaderOptions == null) {
-            yamlLoaderOptions = LoadSettings.builder()
-                .setAllowRecursiveKeys(true)
-                .setParseComments(false)
                 .build();
         }
         return yamlLoaderOptions;
@@ -75,8 +49,8 @@ public class CrateProviders {
     }
 
     public DumpSettings yamlDumperOptionsNoComments() {
-        if (yamlDumperOptions == null) {
-            yamlDumperOptions = DumpSettings.builder()
+        if (yamlDumperOptionsNoComments == null) {
+            yamlDumperOptionsNoComments = DumpSettings.builder()
                 .setDumpComments(false)
                 .setUseUnicodeEncoding(true)
                 .setDefaultScalarStyle(ScalarStyle.DOUBLE_QUOTED)
@@ -87,7 +61,7 @@ public class CrateProviders {
                 .setSplitLines(false)
                 .build();
         }
-        return yamlDumperOptions;
+        return yamlDumperOptionsNoComments;
     }
 
     public InputStreamProvider inputStreamProvider() {

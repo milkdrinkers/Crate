@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.crate;
 
-import io.github.milkdrinkers.crate.internal.provider.CrateProviders;
+import io.github.milkdrinkers.crate.internal.provider.yaml.CrateProviders;
 import io.github.milkdrinkers.crate.internal.provider.InputStreamProvider;
 import io.github.milkdrinkers.crate.util.FileUtils;
 import io.github.milkdrinkers.crate.util.Valid;

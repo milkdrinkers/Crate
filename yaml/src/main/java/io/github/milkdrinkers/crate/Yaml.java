@@ -6,7 +6,7 @@ import io.github.milkdrinkers.crate.internal.FlatFile;
 import io.github.milkdrinkers.crate.internal.editor.yaml.YamlEditor;
 import io.github.milkdrinkers.crate.internal.editor.yaml.YamlParser;
 import io.github.milkdrinkers.crate.internal.editor.yaml.YamlWriter;
-import io.github.milkdrinkers.crate.internal.provider.CrateProviders;
+import io.github.milkdrinkers.crate.internal.provider.yaml.CrateProviders;
 import io.github.milkdrinkers.crate.internal.settings.ConfigSetting;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
 import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
