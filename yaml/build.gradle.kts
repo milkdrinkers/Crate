@@ -16,9 +16,9 @@ tasks {
         archiveClassifier.set("")
 
         fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${project.group}.crate.shaded.${targetPkg}")
-        reloc("org.yaml.snakeyaml", "snakeyaml")
 
         minimize()
+        reloc("org.snakeyaml", "snakeyaml")
     }
 }
 
