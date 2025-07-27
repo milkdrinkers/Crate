@@ -3,10 +3,10 @@
 [libraries]
 annotations = "org.jetbrains:annotations:26.0.2"
 json = "org.json:json:20250517"
-yaml = "org.snakeyaml:snakeyaml-engine:2.9"
+yaml = "org.snakeyaml:snakeyaml-engine:2.10"
 
 # Testing
-junit-bom = "org.junit:junit-bom:5.13.2"
+junit-bom = "org.junit:junit-bom:5.13.4"
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
 
