@@ -41,6 +41,7 @@ import java.util.function.Consumer;
  * @author Crate Configuration Library
  * @since 4.0.0
  */
+@SuppressWarnings("unused")
 public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurationBuilder<T, R>, R> {
     /**
      * Provider for creating input streams from various sources.
@@ -161,9 +162,8 @@ public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurati
             Valid.checkBoolean(!file.getName().contains("."),
                 "Directory name must not contain '.' when used as file location");
 
-            if (!file.exists()) {
+            if (!file.exists())
                 file.mkdirs();
-            }
 
             this.fileName = file.getName() + "." + fileType.getExtension();
             this.directoryPath = file.getAbsolutePath();

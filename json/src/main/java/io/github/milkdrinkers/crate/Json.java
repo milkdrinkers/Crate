@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -24,48 +23,7 @@ import java.util.function.Consumer;
 
 @Getter
 public class Json extends FlatFile {
-    /**
-     * Creates a new Json instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Json(final Json json) {
-        super(json.getFile(), json.fileType);
-        this.fileData = json.getFileData();
-        this.pathPrefix = json.getPathPrefix();
-    }
-
-    /**
-     * Creates a new Json instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Json(final String name, final String path) {
-        this(name, path, null);
-    }
-
-    /**
-     * Creates a new Json instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Json(final String name, final String path, final InputStream inputStream) {
-        this(name, path, inputStream, null);
-    }
-
-    /**
-     * Creates a new Json instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Json(final String name,
-                @Nullable final String path,
-                @Nullable final InputStream inputStream,
-                @Nullable final ReloadSetting reloadSetting) {
-        this(name, path, inputStream, reloadSetting, null);
-    }
-
-    public Json(final String name,
+    Json(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream,
                 @Nullable final ReloadSetting reloadSetting,
@@ -79,17 +37,6 @@ public class Json extends FlatFile {
         if (reloadSetting != null) {
             this.reloadSetting = reloadSetting;
         }
-        forceReload();
-    }
-
-    /**
-     * Creates a new Json instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Json(final File file) {
-        super(file, FileType.JSON);
-        create();
         forceReload();
     }
 

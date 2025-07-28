@@ -51,30 +51,6 @@ public abstract class FlatFile implements DataStorage, Comparable<FlatFile> {
         }
     }
 
-    @Deprecated
-    protected FlatFile(@NonNull final File file, @NonNull final FileType fileType) {
-        this.file = file;
-        this.fileType = fileType;
-        this.reloadConsumer = null;
-        Valid.checkBoolean(
-            fileType == FileType.fromExtension(file),
-            "Invalid file-extension for file type: '" + fileType + "'",
-            "Extension: '" + FileUtils.getExtension(file) + "'");
-    }
-
-    /**
-     * This constructor should only be used to store for example YAML-LIKE data in a .db file
-     *
-     * <p>Therefor no validation is possible. Might be unsafe.
-     */
-    @Deprecated
-    protected FlatFile(@NonNull final File file) {
-        this.file = file;
-        this.reloadConsumer = null;
-        // Might be null
-        this.fileType = FileType.fromFile(file);
-    }
-
     // ----------------------------------------------------------------------------------------------------
     //  Creating our file
     // ----------------------------------------------------------------------------------------------------

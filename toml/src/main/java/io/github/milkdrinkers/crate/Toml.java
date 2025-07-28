@@ -10,43 +10,13 @@ import io.github.milkdrinkers.crate.util.FileUtils;
 import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public class Toml extends FlatFile {
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Toml(@NonNull final Toml toml) {
-        super(toml.getFile());
-        this.fileData = toml.getFileData();
-        this.pathPrefix = toml.getPathPrefix();
-    }
-
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Toml(final String name, final String path) {
-        this(name, path, null);
-    }
-
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Toml(final String name, final String path, final InputStream inputStream) {
-        this(name, path, inputStream, null, null);
-    }
-
-    public Toml(
+    Toml(
         @NonNull final String name,
         @NonNull final String path,
         @Nullable final InputStream inputStream,
@@ -63,17 +33,6 @@ public class Toml extends FlatFile {
             this.reloadSetting = reloadSetting;
         }
 
-        forceReload();
-    }
-
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Toml(final File file) {
-        super(file, FileType.TOML);
-        create();
         forceReload();
     }
 

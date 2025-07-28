@@ -6,62 +6,14 @@ import io.github.milkdrinkers.crate.internal.provider.yaml.CrateProviders;
 import io.github.milkdrinkers.crate.internal.settings.ConfigSetting;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
 import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
-import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.function.Consumer;
 
 @SuppressWarnings({"unused"})
 public class Config extends Yaml {
-    /**
-     * Creates a new Config instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Config(@NonNull final Config config) {
-        super(config);
-    }
-
-    /**
-     * Creates a new Config instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Config(final String name, final String path) {
-        this(name, path, null, null, ConfigSetting.PRESERVE_COMMENTS, DataType.SORTED);
-    }
-
-    /**
-     * Creates a new Config instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Config(
-        final String name,
-        @Nullable final String path,
-        @Nullable final InputStream inputStream) {
-        this(name, path, inputStream, null, ConfigSetting.PRESERVE_COMMENTS, DataType.SORTED);
-    }
-
-    /**
-     * Creates a new Config instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Config(
-        final String name,
-        @Nullable final String path,
-        @Nullable final InputStream inputStream,
-        @Nullable final ReloadSetting reloadSetting,
-        @Nullable final ConfigSetting configSetting,
-        @Nullable final DataType dataType) {
-        super(name, path, inputStream, reloadSetting, configSetting, dataType);
-        setConfigSetting(ConfigSetting.PRESERVE_COMMENTS);
-    }
-
-    public Config(
+    Config(
         final String name,
         @Nullable final String path,
         @Nullable final InputStream inputStream,
@@ -70,16 +22,6 @@ public class Config extends Yaml {
         @Nullable final DataType dataType,
         @Nullable final Consumer<FlatFile> reloadConsumer) {
         super(name, path, inputStream, reloadSetting, configSetting, dataType, reloadConsumer);
-        setConfigSetting(ConfigSetting.PRESERVE_COMMENTS);
-    }
-
-    /**
-     * Creates a new Config instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Config(final File file) {
-        super(file);
     }
 
     // ----------------------------------------------------------------------------------------------------

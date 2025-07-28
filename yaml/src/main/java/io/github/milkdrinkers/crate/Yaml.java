@@ -12,7 +12,6 @@ import io.github.milkdrinkers.crate.internal.settings.DataType;
 import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
 import io.github.milkdrinkers.crate.util.FileUtils;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 import org.snakeyaml.engine.v2.api.Dump;
@@ -32,63 +31,13 @@ public class Yaml extends FlatFile {
     @Setter
     private ConfigSetting configSetting = ConfigSetting.SKIP_COMMENTS;
 
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Yaml(@NonNull final Yaml yaml) {
-        super(yaml.getFile());
-        this.fileData = yaml.getFileData();
-        this.yamlEditor = yaml.getYamlEditor();
-        this.parser = yaml.getParser();
-        this.configSetting = yaml.getConfigSetting();
-        this.inputStream = yaml.getInputStream().orElse(null);
-        this.pathPrefix = yaml.getPathPrefix();
-        this.reloadConsumer = yaml.getReloadConsumer();
-    }
-
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Yaml(final String name, @Nullable final String path) {
-        this(name, path, null, null, null, null);
-    }
-
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Yaml(final String name,
-                @Nullable final String path,
-                @Nullable final InputStream inputStream) {
-        this(name, path, inputStream, null, null, null);
-    }
-
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Yaml(final String name,
-                @Nullable final String path,
-                @Nullable final InputStream inputStream,
-                @Nullable final ReloadSetting reloadSetting,
-                @Nullable final ConfigSetting configSetting,
-                @Nullable final DataType dataType) {
-        this(name, path, inputStream, reloadSetting, configSetting, dataType, null);
-    }
-
-    public Yaml(final String name,
-                @Nullable final String path,
-                @Nullable final InputStream inputStream,
-                @Nullable final ReloadSetting reloadSetting,
-                @Nullable final ConfigSetting configSetting,
-                @Nullable final DataType dataType,
-                @Nullable final Consumer<FlatFile> reloadConsumer) {
+    Yaml(final String name,
+         @Nullable final String path,
+         @Nullable final InputStream inputStream,
+         @Nullable final ReloadSetting reloadSetting,
+         @Nullable final ConfigSetting configSetting,
+         @Nullable final DataType dataType,
+         @Nullable final Consumer<FlatFile> reloadConsumer) {
         super(name, path, FileType.YAML, reloadConsumer);
         this.inputStream = inputStream;
 
@@ -114,15 +63,6 @@ public class Yaml extends FlatFile {
         }
 
         forceReload();
-    }
-
-    /**
-     * Creates a new Yaml instance.
-     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
-     */
-    @Deprecated
-    public Yaml(final File file) {
-        this(file.getName(), FileUtils.getParentDirPath(file));
     }
 
     // ----------------------------------------------------------------------------------------------------
