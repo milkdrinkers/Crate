@@ -4,6 +4,7 @@ import io.github.milkdrinkers.crate.internal.FileData;
 import io.github.milkdrinkers.crate.internal.FileType;
 import io.github.milkdrinkers.crate.internal.FlatFile;
 import io.github.milkdrinkers.crate.internal.editor.toml.TomlManager;
+import io.github.milkdrinkers.crate.internal.provider.CrateProviders;
 import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
 import io.github.milkdrinkers.crate.util.FileUtils;
 import lombok.NonNull;
@@ -16,17 +17,31 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class Toml extends FlatFile {
-
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Toml(@NonNull final Toml toml) {
         super(toml.getFile());
         this.fileData = toml.getFileData();
         this.pathPrefix = toml.getPathPrefix();
     }
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Toml(final String name, final String path) {
         this(name, path, null);
     }
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Toml(final String name, final String path, final InputStream inputStream) {
         this(name, path, inputStream, null, null);
     }
@@ -51,6 +66,11 @@ public class Toml extends FlatFile {
         forceReload();
     }
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Toml(final File file) {
         super(file, FileType.TOML);
         create();
@@ -74,6 +94,30 @@ public class Toml extends FlatFile {
             System.err.println("Exception while writing fileData to file '" + getName() + "'");
             System.err.println("In '" + FileUtils.getParentDirPath(this.file) + "'");
             ioException.printStackTrace();
+        }
+    }
+
+    /**
+     * A builder to build a new Toml instance.
+     * @return A new Builder instance.
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder extends AbstractConfigurationBuilder<Builder, Toml> {
+        private Builder() {
+            super(CrateProviders.inputStreamProvider(), FileType.TOML);
+        }
+
+        public Toml build() {
+            return new Toml(
+                super.getFileName(),
+                super.getDirectoryPath(),
+                super.getDefaultDataStream(),
+                super.getReloadSetting(),
+                super.getReloadCallback()
+            );
         }
     }
 }

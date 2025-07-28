@@ -3,20 +3,31 @@ package io.github.milkdrinkers.crate;
 import io.github.milkdrinkers.crate.internal.exceptions.CrateValidationException;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TomlTest {
-
     static Toml toml;
+    @TempDir
+    File tempDir;
 
     @BeforeEach
     @Test
     void setUp() {
-        toml = new Toml("Example", "");
+        toml = Toml.builder()
+            .path(tempDir.getPath(), "Example.toml")
+            .build();
         Assertions.assertEquals("Example.toml", toml.getName());
+    }
+
+    @AfterEach
+    void tearDown() {
+        toml.clear();
+        Assertions.assertTrue(toml.getFile().delete());
     }
 
     @Test
@@ -64,11 +75,5 @@ public class TomlTest {
         Assertions.assertTrue(toml.getData().containsKey("Test-Key-1"));
         Assertions.assertTrue(toml.contains("Test-Key-1"));
         Assertions.assertTrue(toml.getBoolean("Test-Key-1"));
-    }
-
-    @AfterAll
-    static void tearDown() {
-        toml.clear();
-        Assertions.assertTrue(toml.getFile().delete());
     }
 }

@@ -30,14 +30,16 @@ class ConfigTest {
     @BeforeEach
     @Test
     void setUp() {
-        config = new Config("Example", tempDir.getPath());
+        config = Config.builderConfig()
+            .path(tempDir.getPath(), "Example.yml")
+            .build();
         Assertions.assertEquals("Example.yml", config.getName());
         Assertions.assertEquals(new ArrayList<>(), config.getHeader());
     }
 
     @Test
     void testGetDataType() {
-        Assertions.assertEquals(config.getDataType(), DataType.SORTED);
+        Assertions.assertEquals(DataType.SORTED, config.getDataType());
     }
 
     @Test

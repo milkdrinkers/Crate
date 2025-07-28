@@ -44,18 +44,14 @@ public abstract class FlatFile implements DataStorage, Comparable<FlatFile> {
         this.fileType = fileType;
         this.reloadConsumer = reloadConsumer;
         if (path == null || path.isEmpty()) {
-            this.file = new File(FileUtils.replaceExtensions(name) + "." + fileType.getExtension());
+            this.file = new File(name);
         } else {
             final String fixedPath = path.replace("\\", "/");
-            this.file = new File(
-                fixedPath
-                    + File.separator
-                    + FileUtils.replaceExtensions(name)
-                    + "."
-                    + fileType.getExtension());
+            this.file = new File(fixedPath + File.separator + name);
         }
     }
 
+    @Deprecated
     protected FlatFile(@NonNull final File file, @NonNull final FileType fileType) {
         this.file = file;
         this.fileType = fileType;
@@ -71,6 +67,7 @@ public abstract class FlatFile implements DataStorage, Comparable<FlatFile> {
      *
      * <p>Therefor no validation is possible. Might be unsafe.
      */
+    @Deprecated
     protected FlatFile(@NonNull final File file) {
         this.file = file;
         this.reloadConsumer = null;

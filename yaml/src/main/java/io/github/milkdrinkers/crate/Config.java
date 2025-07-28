@@ -1,6 +1,8 @@
 package io.github.milkdrinkers.crate;
 
+import io.github.milkdrinkers.crate.internal.FileType;
 import io.github.milkdrinkers.crate.internal.FlatFile;
+import io.github.milkdrinkers.crate.internal.provider.yaml.CrateProviders;
 import io.github.milkdrinkers.crate.internal.settings.ConfigSetting;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
 import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
@@ -13,14 +15,29 @@ import java.util.function.Consumer;
 
 @SuppressWarnings({"unused"})
 public class Config extends Yaml {
+    /**
+     * Creates a new Config instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Config(@NonNull final Config config) {
         super(config);
     }
 
+    /**
+     * Creates a new Config instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Config(final String name, final String path) {
         this(name, path, null, null, ConfigSetting.PRESERVE_COMMENTS, DataType.SORTED);
     }
 
+    /**
+     * Creates a new Config instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Config(
         final String name,
         @Nullable final String path,
@@ -28,6 +45,11 @@ public class Config extends Yaml {
         this(name, path, inputStream, null, ConfigSetting.PRESERVE_COMMENTS, DataType.SORTED);
     }
 
+    /**
+     * Creates a new Config instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Config(
         final String name,
         @Nullable final String path,
@@ -51,6 +73,11 @@ public class Config extends Yaml {
         setConfigSetting(ConfigSetting.PRESERVE_COMMENTS);
     }
 
+    /**
+     * Creates a new Config instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Config(final File file) {
         super(file);
     }
@@ -67,5 +94,32 @@ public class Config extends Yaml {
     @Override
     public Config addDefaultsFromInputStream(@Nullable final InputStream inputStream) {
         return (Config) super.addDefaultsFromInputStream(inputStream);
+    }
+
+    /**
+     * A builder to build a new Config instance.
+     *
+     * @return A new Builder instance.
+     */
+    public static Builder builderConfig() {
+        return new Builder().config(ConfigSetting.PRESERVE_COMMENTS).dataType(DataType.SORTED);
+    }
+
+    public static class Builder extends AbstractConfigurationBuilder<Builder, Config> {
+        private Builder() {
+            super(CrateProviders.inputStreamProvider(), FileType.YAML);
+        }
+
+        public Config build() {
+            return new Config(
+                super.getFileName(),
+                super.getDirectoryPath(),
+                super.getDefaultDataStream(),
+                super.getReloadSetting(),
+                super.getConfigSetting(),
+                super.getDataType(),
+                super.getReloadCallback()
+            );
+        }
     }
 }

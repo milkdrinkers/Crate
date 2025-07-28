@@ -1,0 +1,20 @@
+# Test configuration with default values
+app:
+  name: "Test Application"
+  version: "1.0.0"
+  debug: true
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "testdb"
+
+features:
+  - "feature1"
+  - "feature2"
+  - "feature3"
+
+settings:
+  timeout: 30
+  retries: 3
+  enabled: true

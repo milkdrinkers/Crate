@@ -3,6 +3,7 @@ package io.github.milkdrinkers.crate;
 import io.github.milkdrinkers.crate.internal.FileData;
 import io.github.milkdrinkers.crate.internal.FileType;
 import io.github.milkdrinkers.crate.internal.FlatFile;
+import io.github.milkdrinkers.crate.internal.provider.json.CrateProviders;
 import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
 import io.github.milkdrinkers.crate.util.FileUtils;
 import io.github.milkdrinkers.crate.util.JsonUtils;
@@ -23,21 +24,40 @@ import java.util.function.Consumer;
 
 @Getter
 public class Json extends FlatFile {
-
+    /**
+     * Creates a new Json instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Json(final Json json) {
         super(json.getFile(), json.fileType);
         this.fileData = json.getFileData();
         this.pathPrefix = json.getPathPrefix();
     }
 
+    /**
+     * Creates a new Json instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Json(final String name, final String path) {
         this(name, path, null);
     }
 
+    /**
+     * Creates a new Json instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Json(final String name, final String path, final InputStream inputStream) {
         this(name, path, inputStream, null);
     }
 
+    /**
+     * Creates a new Json instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Json(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream,
@@ -62,6 +82,11 @@ public class Json extends FlatFile {
         forceReload();
     }
 
+    /**
+     * Creates a new Json instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Json(final File file) {
         super(file, FileType.JSON);
         create();
@@ -116,5 +141,29 @@ public class Json extends FlatFile {
             writer.write(JsonUtils.getJsonFromMap(data.toMap()).toString(3));
             writer.flush();
         });
+    }
+
+    /**
+     * A builder to build a new Json instance.
+     * @return A new Builder instance.
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder extends AbstractConfigurationBuilder<Builder, Json> {
+        private Builder() {
+            super(CrateProviders.inputStreamProvider(), FileType.JSON);
+        }
+
+        public Json build() {
+            return new Json(
+                super.getFileName(),
+                super.getDirectoryPath(),
+                super.getDefaultDataStream(),
+                super.getReloadSetting(),
+                super.getReloadCallback()
+            );
+        }
     }
 }

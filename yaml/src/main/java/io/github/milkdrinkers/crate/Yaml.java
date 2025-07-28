@@ -32,6 +32,11 @@ public class Yaml extends FlatFile {
     @Setter
     private ConfigSetting configSetting = ConfigSetting.SKIP_COMMENTS;
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Yaml(@NonNull final Yaml yaml) {
         super(yaml.getFile());
         this.fileData = yaml.getFileData();
@@ -43,16 +48,31 @@ public class Yaml extends FlatFile {
         this.reloadConsumer = yaml.getReloadConsumer();
     }
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Yaml(final String name, @Nullable final String path) {
         this(name, path, null, null, null, null);
     }
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Yaml(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream) {
         this(name, path, inputStream, null, null, null);
     }
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Yaml(final String name,
                 @Nullable final String path,
                 @Nullable final InputStream inputStream,
@@ -96,6 +116,11 @@ public class Yaml extends FlatFile {
         forceReload();
     }
 
+    /**
+     * Creates a new Yaml instance.
+     * @deprecated Use {@link Builder} instead. This method will be removed in the next major release.
+     */
+    @Deprecated
     public Yaml(final File file) {
         this(file.getName(), FileUtils.getParentDirPath(file));
     }
@@ -241,5 +266,31 @@ public class Yaml extends FlatFile {
 
     public final Optional<InputStream> getInputStream() {
         return Optional.ofNullable(this.inputStream);
+    }
+
+    /**
+     * A builder to build a new Yaml instance.
+     * @return A new Builder instance.
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder extends AbstractConfigurationBuilder<Builder, Yaml> {
+        private Builder() {
+            super(CrateProviders.inputStreamProvider(), FileType.YAML);
+        }
+
+        public Yaml build() {
+            return new Yaml(
+                super.getFileName(),
+                super.getDirectoryPath(),
+                super.getDefaultDataStream(),
+                super.getReloadSetting(),
+                super.getConfigSetting(),
+                super.getDataType(),
+                super.getReloadCallback()
+            );
+        }
     }
 }

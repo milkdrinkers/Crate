@@ -424,7 +424,7 @@ public class FileUtils {
         if (!targetDirectory.exists()) {
             Valid.checkBoolean(
                 targetDirectory.mkdirs(),
-                "Can't create directory '" + targetDirectory.getName() + "'",
+                "Can't build directory '" + targetDirectory.getName() + "'",
                 "Parent: '" + getParentDirPath(targetDirectory) + "'");
         }
 

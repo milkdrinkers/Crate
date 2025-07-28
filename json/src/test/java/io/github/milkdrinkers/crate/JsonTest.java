@@ -3,25 +3,36 @@ package io.github.milkdrinkers.crate;
 import io.github.milkdrinkers.crate.internal.exceptions.CrateValidationException;
 import io.github.milkdrinkers.crate.internal.settings.DataType;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class JsonTest {
-
     static Json json;
+    @TempDir
+    File tempDir;
 
     @BeforeEach
     @Test
     void setUp() {
-        json = new Json("Example", "");
+        json = Json.builder()
+            .path(tempDir.getPath(), "Example.json")
+            .build();
         Assertions.assertEquals("Example.json", json.getName());
+    }
+
+    @AfterEach
+    void tearDown() {
+        json.clear();
+        Assertions.assertTrue(json.getFile().delete());
     }
 
     @Test
     void testGetDataType() {
-        Assertions.assertEquals(json.getDataType(), DataType.UNSORTED);
+        Assertions.assertEquals(DataType.UNSORTED, json.getDataType());
     }
 
     @Test
@@ -64,11 +75,5 @@ public class JsonTest {
         Assertions.assertTrue(json.getData().containsKey("Test-Key-1"));
         Assertions.assertTrue(json.contains("Test-Key-1"));
         Assertions.assertTrue(json.getBoolean("Test-Key-1"));
-    }
-
-    @AfterAll
-    static void tearDown() {
-        json.clear();
-        Assertions.assertTrue(json.getFile().delete());
     }
 }
